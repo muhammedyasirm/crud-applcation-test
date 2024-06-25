@@ -1,23 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import HomePage from './components/Home';
+import React, { useState, useEffect } from "react";
+import Header from './components/partials/Header';
+import { getEmployees } from './services/api';
 
-function App() {
+function App() {  
+  const [employees, setEmployees] = useState([]);
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const data = await getEmployees(); // Fetch employees data from API
+        setEmployees(data); // Update state with fetched data
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+        // Handle error fetching employees
+      }
+    };
+
+    fetchEmployees();
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <HomePage employees={employees}/>
     </div>
   );
 }
