@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./styles.css";
+import { createEmployee, updateEmployee } from "../../../services/api";
 
 const EmployeeModal = ({
   showModal,
@@ -9,24 +10,35 @@ const EmployeeModal = ({
   onSave,
 }) => {
   const [fullName, setFullName] = useState('');
-    const [salary, setSalary] = useState('');
+  const [salary, setSalary] = useState('');
 
-    useEffect(() => {
-        if (initialData) {
-            setFullName(initialData.name || '');
-            setSalary(initialData.salary || '');
-        } else {
-            setFullName('');
-            setSalary('');
-        }
-    }, [initialData]);
+  useEffect(() => {
+    if (initialData) {
+      setFullName(initialData.fullName || '');
+      setSalary(initialData.salary || '');
+    } else {
+      setFullName('');
+      setSalary('');
+    }
+  }, [initialData]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you can handle form submission, e.g., send data to server or parent component
-    onSave({ id: initialData.id, fullName, salary });
-    // Close the modal after submission
-    onClose();
+    const employeeData = { fullName, salary };
+
+    try {
+      if (isEditMode) {
+        await updateEmployee(initialData.id, employeeData);
+        onSave({ ...initialData, fullName, salary });
+      } else {
+        const createdEmployee = await createEmployee(employeeData);
+        onSave(createdEmployee);
+      }
+      onClose();
+    } catch (error) {
+      console.error('Failed to save employee:', error);
+      // Optionally, handle error state here
+    }
   };
 
   const handleCancel = () => {
