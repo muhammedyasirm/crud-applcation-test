@@ -1,13 +1,19 @@
 import axios from 'axios';
+import { API_URL } from './apiConstants';
 
 export const getEmployees = async () => {
-    let response = await axios.get('/api/employees');
-    return response;
+    try {
+        let response = await axios.get(API_URL);
+        return response;
+    } catch (error) {
+        console.error('Error fetching employees:', error);
+        throw error;
+    }
 }
 
 export const createEmployee = async (employeeData) => {
     try {
-        const response = await axios.post('/api/employees', employeeData);
+        const response = await axios.post(API_URL, employeeData);
         console.log('Employee created:', response.data);
         return response.data;
     } catch (error) {
@@ -18,7 +24,7 @@ export const createEmployee = async (employeeData) => {
 
 export const updateEmployee = async (id, employeeData) => {
     try {
-        const response = await axios.put(`/api/employees/${id}`, employeeData);
+        const response = await axios.put(`${API_URL}/${id}`, employeeData);
         return response.data;
     } catch (error) {
         console.error('Error updating employee:', error);
@@ -27,5 +33,10 @@ export const updateEmployee = async (id, employeeData) => {
 };
 
 export const deleteEmployee = (id) => {
-    return axios.delete(`/api/employees/${id}`);
+    try {
+        return axios.delete(`${API_URL}/${id}`);
+    } catch (error) {
+        console.error('Error deleting employee:', error);
+        throw error;
+    }
 };
