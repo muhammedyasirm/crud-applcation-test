@@ -89,7 +89,7 @@ const EmployeeModal = ({
               id="salary"
               value={salary}
               type="text"
-              placeholder="Username"
+              placeholder="Salary"
               onChange={(e) => setSalary(e.target.value)}
               required
             />
@@ -97,18 +97,18 @@ const EmployeeModal = ({
           <br />
           <br />
 
-          <button class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded-full w-36 h-9">
+          <button className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded-full w-36 h-9">
             {isEditMode ? "Update" : "Submit"}
           </button>
           <button
-            class="bg-red-500 hover:bg-red-700 text-white font-bold  rounded-full w-36 h-9"
+            className="bg-red-500 hover:bg-red-700 text-white font-bold  rounded-full w-36 h-9"
             onClick={handleCancel}
           >
             Cancel
           </button>
         </form>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
